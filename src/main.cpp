@@ -28,6 +28,7 @@ string trackbar_value3 = "max Area";
 
 /// Function headers
 void update(const cv::Mat&);
+int avgGrayValue(const cv::Mat gray);
 
 int main( int argc, char** argv )
 {
@@ -59,6 +60,7 @@ int main( int argc, char** argv )
       return 0;
     }
     cvtColor( frame, frame, CV_BGR2GRAY);
+    threshold_value1 = 0.3 * avgGrayValue(frame);
     update(frame);
     int c;
     cv::imshow("frame", frame);
@@ -68,6 +70,7 @@ int main( int argc, char** argv )
    }
 
 }
+
 
 
 /// Image Process
@@ -102,4 +105,14 @@ void update(const cv::Mat& frame) {
     }
   }
   imshow( "dst", dstImage);
+}
+
+int avgGrayValue(const cv::Mat gray) {
+  int cols = gray.cols;
+  int rows = gray.rows;
+  double val = 0;
+  for (int i = 0; i < cols * rows; ++i) {
+     val += gray.data[i];
+  }
+  return val / (cols * rows);
 }
