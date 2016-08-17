@@ -14,7 +14,15 @@ int main( int argc, char** argv )
   int thresh = 20;
 
   /// Load vedio
-  cv::VideoCapture cap(argv[1]);
+  cv::VideoCapture cap;
+  cv::Mat image;
+  if (argv[1][0] == 'v') // input video
+    cap = cv::VideoCapture(argv[2]);
+  else if (argv[1][0] == 'i') // input image
+    image = cv::imread(argv[2], 3);
+  else if (argv[1][0] == 'c') // input camera
+    cap = cv::VideoCapture(argv[2][0] - '0');
+
   cv::namedWindow("frame");
   cv::createTrackbar("gauss size", "frame", &gauss_size, 111);
   cv::createTrackbar("gauss_sigma", "frame", &gauss_sigma, 111);
@@ -22,11 +30,30 @@ int main( int argc, char** argv )
   while(true)
     {
       cv::Mat frame;
-      cap >> frame;
-      if (frame.data == NULL) {
-        std::cout << "Finished!" << std::endl;
-        return 0;
+      if (argv[1][0] == 'v') // input video 
+        {
+          cap >> frame;
+          if (frame.data == NULL) {
+            std::cout << "Finished!" << std::endl;
+            return 0;
+          }
+
+        }
+      else if (argv[1][0] == 'i') // input image
+        frame = image.clone();
+      else if (argv[1][0] == 'c') // input camera
+        {
+          cap >> frame;
+          cap >> frame;
+          if (frame.data == NULL) {
+            std::cout << "Finished!" << std::endl;
+            return 0;
+          }
+        }
+      else {
+        return -1;
       }
+
       cv::Point iril = getIril(frame, cv::Size(gauss_size * 2 + 1, gauss_size * 2 + 1), gauss_sigma, thresh);
       cv::circle(frame, iril, 2, cv::Scalar(0, 0 ,255), 3, 8, 0);
       cv::imshow("frame", frame);
