@@ -10,7 +10,7 @@ set(CMAKE_BUILD_TYPE Release)
 
 set(source
   src/main.cpp
-  src/CCA_Labeling.cpp)
+  src/detectIril.cpp)
 
 find_package(OpenCV REQUIRED)
 
