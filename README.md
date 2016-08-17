@@ -5,8 +5,12 @@ Using OpenCV detect pupil
 mkdir build
 cmake ..
 make
-./pupil c 0
+./pupil i ../image/l.png
 ``` 
 
 ## Show
 ![](./image/frame.png)
+![](./image/result_l.png)
+![](./image/result_r.png)
+![](./image/l.png)
+![](./image/r.png)
